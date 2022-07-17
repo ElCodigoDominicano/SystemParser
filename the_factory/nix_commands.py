@@ -1,3 +1,19 @@
+"""
+    This file is included with SystemParser in order to obtain system information
+    Copyright (C) 2022 AERivas
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+"""
+
 posix_command = {
     'cpuInfo': ["cat", "/proc/cpuinfo"],
     'memInfo': ["cat", "/proc/meminfo"],
