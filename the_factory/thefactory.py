@@ -12,9 +12,42 @@ from .win_parse import start_powershell_process
 from .win_commands import powershell_command
 from .nix_commands import posix_command
 
+WINDOWS_ACCEPTED_ARGS = [
+    'bus',
+    'processor',
+    'network',
+    'memory',
+    'drivers',
+    'sound',
+    'usb',
+    'floppy',
+    'ide',
+    'pcmcia',
+    'usb',
+    'parallel',
+    'serial',
+    'graphics',
+    ]
+LINUX_ACCEPTED_ARGS = [
+    'bios',
+    'processor',
+    'network',
+    'memory',
+    'drivers',
+    'check_vuln',
+    'power',
+    '',
+    '',
+    '',
+    '',
+    '',
+    ]
+
+
 def get_os():
     return platform.system()
-    
+
+
 class WinRig:
     def __init__(self):
         self._motherboard = powershell_command["MotherboardDevice"]
