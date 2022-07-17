@@ -18,8 +18,4 @@ powershell_command = {
     'SerialPortSettings':   ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_SerialPortSettings | Format-List'],
     'SerialPortConfiguration':  ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_SerialPortConfiguration | Format-List'],
     'EnvironmentVariables': ['PowerShell.exe', 'Get-CimChildItem', '-Path', 'env:\ | Format-List']
-}   
-# to be added Get-ChildItem -Path 'env:\'
- 
-
-# Must implement Network
+}
