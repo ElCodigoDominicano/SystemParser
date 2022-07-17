@@ -42,7 +42,6 @@ def start_powershell_process(command: list[str]):
         stderr=subprocess.PIPE,
         startupinfo=hide_process()
     )
-    process.wait()
     stream_to_str = str(process.communicate()[0], 'UTF-8')
     stream_str_to_lst = stream_to_str.split("\r\n")
     process.kill()
