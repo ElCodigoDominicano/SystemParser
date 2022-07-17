@@ -1,5 +1,5 @@
 """
-    The Factory a simple system information gathering tool
+    SystemParser(The Factory) a simple system information gathering tool
     Copyright (C) 2022 AERivas
 
     This program is free software: you can redistribute it and/or modify
@@ -11,7 +11,8 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
+    Author: AERivas
+    Date: 07/17/2022
 """
 
 import sys
