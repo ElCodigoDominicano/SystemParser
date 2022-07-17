@@ -1,20 +1,33 @@
 """
-A basic windows system information gathering tool using subprocess Popen, 
-powershell commands and bespoke helper functions.
+    This file is included with SystemParser in order to obtain system information
+    Copyright (C) 2022 AERivas
 
-Returns an accumulatable(by value, not key) defaultdict 
-containing the output information from a valid powershell command 
-(a list of strings that are commands seperated by commas)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-Example. ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_Processor']
-the above example tells powershell to get a 'instance of a Win32 class object' 
-in this case information about the local or remote systems processor.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-*changes will be made periodically*
-NOTE: https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-provider    
+    A basic windows system information gathering tool using subprocess Popen, 
+    powershell commands and bespoke helper functions.
 
-Author: AERivas
-Date 07/09/2022
+    Returns an accumulatable(by value, not key) defaultdict 
+    containing the output information from a valid powershell command 
+    (a list of strings that are commands seperated by commas)
+
+    Example. ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_Processor']
+    the above example tells powershell to get an 'instance of a Win32 class object' 
+    in this case information about the local or remote systems processor.
+
+    *changes will be made periodically*
+    NOTE: https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-provider    
+
+    Author: AERivas
+    Date 07/09/2022
 """
 import subprocess
 from collections import defaultdict
