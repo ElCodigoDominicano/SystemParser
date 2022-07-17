@@ -1,10 +1,22 @@
 """
-The Factory; gatherer of information, the hodlr of values, 
-the delagator of environments, the outlet of default dictionaries.
+    This file is included with SystemParser in order to obtain system information
+    Copyright (C) 2022 AERivas
 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-Author: AERivas
-Date: 07/11/2022
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    The Factory; gatherer of information, the hodlr of values, 
+    the delagator of environments, the outlet of default dictionaries.
+    
+    Author: AERivas
+    Date: 07/11/2022
 """
 import platform
 from .nix_parse import start_posix_process
