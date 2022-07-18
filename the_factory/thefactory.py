@@ -60,6 +60,11 @@ def get_os():
     return platform.system()
 
 
+def print_prettifier(func: list[str]):
+     result = [print("{:^50} => {:^50}".format(k, v[0])) for (k,v) in func.items()]
+     result.pop(None)
+
+
 class WinRig:
     def __init__(self):
         self._motherboard = powershell_command["MotherboardDevice"]
@@ -83,17 +88,16 @@ class WinRig:
             powershell_command["SerialPortConfiguration"]
         ]
 
-
     def get_motherboard_information(self):
-        print(start_powershell_process(self._motherboard))
+        print_prettifier(start_powershell_process(self._motherboard))
 
 
     def get_processor_information(self):
-        print(start_powershell_process(self._processor))
-
-
+        print_prettifier(start_powershell_process(self._processor))
+        
+            
     def get_memory_information(self):
-        print(start_powershell_process(self._memory))
+        print_prettifier(start_powershell_process(self._memory))
 
 
     # def get_network_information(self):
@@ -101,37 +105,37 @@ class WinRig:
 
 
     def get_bus_information(self):
-        print(start_powershell_process(self._bus))
+        print_prettifier(start_powershell_process(self._bus))
 
 
     def get_sound_device_information(self):
-        print(start_powershell_process(self._sound_device))
+        print_prettifier(start_powershell_process(self._sound_device))
 
 
     def get_floppy_drive_information(self):
-        print(start_powershell_process(self._floppy))
+        print_prettifier(start_powershell_process(self._floppy))
 
 
     def get_ide_controller_information(self):
-        print(start_powershell_process(self._ide))
+        print_prettifier(start_powershell_process(self._ide))
 
 
     def get_pcmcia_controller_information(self):
-        print(start_powershell_process(self._pcmcia))
+        print_prettifier(start_powershell_process(self._pcmcia))
 
 
     def get_parallel_port_information(self):
-        print(start_powershell_process(self._parallel))
+        print_prettifier(start_powershell_process(self._parallel))
 
 
     def get_usb_port_information(self):
-        print(start_powershell_process(self._usb[0]),
+        print_prettifier(start_powershell_process(self._usb[0]),
             start_powershell_process(self._usb[1]),
             start_powershell_process(self._usb[2]))
 
 
     def get_serial_port_information(self):
-        print(start_powershell_process(self._serial[0]),
+        print_prettifier(start_powershell_process(self._serial[0]),
             start_powershell_process(self._serial[1]),
             start_powershell_process(self._serial[2]))
 
@@ -142,7 +146,7 @@ class WinRig:
         """
         pass
 
-
+    
 class NixRig():
 
     def __init__(self):
