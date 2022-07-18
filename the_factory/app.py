@@ -21,9 +21,12 @@ from the_factory import thefactory
 
 def main(args: list[str]):
     operating_system = thefactory.get_os()
-    print(f"The following arguments for the {operating_system} system:", *thefactory.WINDOWS_ACCEPTED_ARGS, sep=" ")
-    print()
-    if operating_system == 'Windows':
+    if len(args) == 0 and operating_system == 'Windows':
+        print(f"The following arguments for the {operating_system} system:", *thefactory.WINDOWS_ACCEPTED_ARGS, sep=" ")
+        sys.exit(0)
+    elif len(args) == 0 and operating_system == "Linux":
+        print(f"The following commands for the {operating_system} system:", *thefactory.LINUX_ACCEPTED_ARGS, sep=" ")
+    if len(args) > 0 and operating_system == 'Windows':
         w = thefactory.WinRig()
         for argument in args:
             try:
@@ -61,8 +64,7 @@ def main(args: list[str]):
             finally:
                 sys.exit(0)
         
-    if operating_system == 'Linux':
-        print(f"The following commands for the {operating_system} system:", *thefactory.LINUX_ACCEPTED_ARGS, sep=" ")
+    if operating_system == 'Linux' and len(args) > 0:
         x = thefactory.NixRig()
     for argument in args:   
         try:     
