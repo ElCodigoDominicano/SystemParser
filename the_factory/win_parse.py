@@ -78,4 +78,3 @@ def parse_process(lst_of_str: list[str]):
         TEMPLATE[keys].append(values)
     TEMPLATE.pop("")
     return TEMPLATE
-   
