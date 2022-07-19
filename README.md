@@ -1,15 +1,16 @@
 # SystemParser_0.0.2-alpha
-A simple system information gathering tool, displays a medley of system information 
-reported by the systems environment (ex. Windows, Linux, MACOS) such as..
+A simple system information gathering tool written in python, 
+displays a medley of system information reported by the systems 
+environment(ex. Windows, *Nix, MACOS) such as..
 - hardware information (+processor vulnerability check for Linux machines)
-- network information 
+- network information
 - audio information
 - usb device information
 - bios information
 - motherboard information
 - and more 
 
-# Linux
+# *Nix
 - information about usage here
 
 # Windows
