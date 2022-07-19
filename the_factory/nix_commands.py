@@ -13,7 +13,6 @@
     GNU General Public License for more details.
 
 """
-
 posix_command = {
     'cpuInfo': ["cat", "/proc/cpuinfo"],
     'memInfo': ["cat", "/proc/meminfo"],
@@ -29,7 +28,7 @@ posix_command = {
         'find', '/sys/devices/virtual/dmi/id/power/', '-type', 'f', '-print0', '-readable', '-exec', 
         'sed', 's/^/:/', '{}', ';'],
     'networkInfo6': [
-        'find', "-L", '/proc/sys/net/ipv6', '-type', 'f', '-follow', '-print0', '-exec',
+        'find', "-L", '/proc/sys/net/ipv6', '-type', 'f', '-print0', '-exec',
         'sed', '-z', 's/^/:/', '{}', ';'],
     'networkInfo4':  [
         'find', '-L', '/proc/sys/net/ipv4', '-type', 'f', '-print0', '-exec', 
@@ -54,6 +53,3 @@ posix_command = {
     'env': ["env"],
     'filesystems': ["cat", "/proc/filesystems"],
 }
-
-
-#awk -F ":"  '{ print FILENAME FS $0 }' /sys/devices/system/cpu/vulnerabilities
