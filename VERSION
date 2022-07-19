@@ -1,2 +1,3 @@
 0.0.1-rc -> Returned a python defaultdict containing the data
 0.0.2-alpha -> Displays that data prettified added a string prettifier function
+0.0.3-alpha -> Minor fix to code
