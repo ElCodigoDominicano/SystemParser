@@ -24,7 +24,7 @@ from .win_parse import start_powershell_process
 from .win_commands import powershell_command
 from .nix_commands import posix_command
 
-WINDOWS_ACCEPTED_ARGS = [
+WINDOWS_ACCEPTED_ARGS: list[str] = [
     'bus',
     'processor',
     'network',
@@ -40,7 +40,7 @@ WINDOWS_ACCEPTED_ARGS = [
     'serial',
     'graphics',
     ]
-LINUX_ACCEPTED_ARGS = [
+LINUX_ACCEPTED_ARGS: list[str] = [
     'bios',
     'processor',
     'network',
@@ -56,16 +56,21 @@ LINUX_ACCEPTED_ARGS = [
     ]
 
 
-def get_os():
+def get_os() -> str:
     return platform.system()
 
 
-def print_prettifier(func: list[str]):
-     result = [print("{:^50} => {:^50}".format(k, v[0])) for (k,v) in func.items()]
-     result.pop(None)
+def print_prettifier(func):
+    if get_os() == 'Windows':
+        result = [print("{:20} => {:^30}".format(k, " ".join(v))) for (k,v) in func.items()]
+        result.pop(None)
+    elif get_os() == 'Linux':
+        result = [print("{:20} => {:^30}".format(k, v[0:])) for (k,v) in func.items()]
+        result.pop(None)
 
 
 class WinRig:
+
     def __init__(self):
         self._motherboard = powershell_command["MotherboardDevice"]
         self._processor = powershell_command["Processor"]
@@ -77,17 +82,13 @@ class WinRig:
         self._ide = powershell_command["IDEController"]
         self._pcmcia = powershell_command["PCMCIAController"]
         self._parallel = powershell_command["ParallelPort"]
-        self._usb = [
-            powershell_command["USBHub"],
-            powershell_command["USBController"],
-            powershell_command["USBControllerDevice"]
-        ]
-        self._serial = [
-            powershell_command["SerialPort"],
-            powershell_command["SerialPortSettings"],
-            powershell_command["SerialPortConfiguration"]
-        ]
-
+        self._usb_hub = powershell_command["USBHub"]
+        self._usb_controller = powershell_command["USBController"]
+        self._usb_controller_device = powershell_command["USBControllerDevice"]
+        self._serial_port = powershell_command["SerialPort"]
+        self._serial_port_settings = powershell_command["SerialPortSettings"]
+        self._serial_port_configuration = powershell_command["SerialPortConfiguration"]
+    
     def get_motherboard_information(self):
         print_prettifier(start_powershell_process(self._motherboard))
 
@@ -128,16 +129,28 @@ class WinRig:
         print_prettifier(start_powershell_process(self._parallel))
 
 
-    def get_usb_port_information(self):
-        print_prettifier(start_powershell_process(self._usb[0]),
-            start_powershell_process(self._usb[1]),
-            start_powershell_process(self._usb[2]))
-
+    def get_usb_hub_information(self):
+        print_prettifier(start_powershell_process(self._usb_hub))
+    
+    
+    def get_usb_controller_information(self):
+        print_prettifier(start_powershell_process(self._usb_controller))
+    
+    
+    def get_usb_controller_device_infromation(self):
+        print_prettifier(start_powershell_process(self._usb_controller_device))
+   
 
     def get_serial_port_information(self):
-        print_prettifier(start_powershell_process(self._serial[0]),
-            start_powershell_process(self._serial[1]),
-            start_powershell_process(self._serial[2]))
+        print_prettifier(start_powershell_process(self._serial_port))
+
+    
+    def get_serial_port_settings_information(self):
+        print_prettifier(start_powershell_process(self._serial_port_settings))
+        
+    
+    def get_serial_port_configuration_information(self):
+        print_prettifier(start_powershell_process(self._serial_port_configuration))
 
 
     def get_graphic_card_information(self):
@@ -146,7 +159,6 @@ class WinRig:
         """
         pass
 
-    
 class NixRig():
 
     def __init__(self):
@@ -154,20 +166,17 @@ class NixRig():
         self._processor = posix_command["cpuInfo"]
         self._memory = posix_command["memInfo"]
         self._drivers = posix_command["modules"]
-        self._cpu_vulnerabilities= posix_command['checkCpuVuln']
-        self._network = [
-            posix_command["networkInfo4"],
-            posix_command["networkInfo6"]
-        ]
+        self._cpu_vulnerabilities = posix_command['checkCpuVuln']
+        self._network4 = posix_command["networkInfo4"]
+        self._network6 = posix_command["networkInfo6"]
+        self._power = posix_command["power"]
         # self._usb = 
         # self._audio_device = 
         # self._bus = 
         # self._gpu = 
-        self._power = posix_command["power"]
-    
     
     def get_power_information(self):
-        print(start_posix_process(self._power))
+        print_prettifier(start_posix_process(self._power))
 
     
     def get_smbios_information(self):
@@ -179,7 +188,7 @@ class NixRig():
         
         /sys/devices/virtual/dmi/id/
         """      
-        print(start_posix_process(self._smbios))
+        print_prettifier(start_posix_process(self._smbios))
 
 
     def get_processor_information(self):
@@ -196,7 +205,7 @@ class NixRig():
         more about default-dictionaries below
         https://docs.python.org/3/library/collections.html#collections.defaultdict
         """
-        print(start_posix_process(self._processor))
+        print_prettifier(start_posix_process(self._processor))
    
 
     def get_memory_information(self):
@@ -206,7 +215,7 @@ class NixRig():
         ram and swap usage information. since the stream is non-repetitive 
         there is no need for this to be a default dictionary
         """
-        print(start_posix_process(self._memory))
+        print_prettifier(start_posix_process(self._memory))
 
 
     def get_gpu_information(self):
@@ -244,22 +253,27 @@ class NixRig():
         pass
     
     
-    def get_network_information(self):
+    def get_network4_information(self):
         """
         Returns a dictionary containing various network
         information such as settings and configuration 
-        stored in /proc/sys/net/ 
-        ip -j address < -- returns a json of the systems network information
-        ip -s address <-- returns statistics {TX RX info}
-        ip -j route <--- returns the routing information of the system  
+        stored in /proc/sys/net/ipv4
         """
-        print(start_posix_process(self._network[0]),
-            start_posix_process(self._network[1]))
+        print_prettifier(start_posix_process(self._network4))
 
-
+    
+    def get_network6_information(self):
+        """
+        Returns a dictionary containing various network
+        information such as settings and configuration 
+        stored in /proc/sys/net/ipv6
+        """
+        print_prettifier(start_posix_process(self._network6))
+    
+    
     def get_driver_information(self):
         """Returns a dictionary containing the installed device drivers (mod)"""
-        print(start_posix_process(self._drivers))
+        print_prettifier(start_posix_process(self._drivers))
     
     
     def get_cpu_vuln_information(self):
@@ -276,4 +290,4 @@ class NixRig():
         these files are located: /sys/devices/system/cpu/vulnerabilities/
         more information: https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-devices-system-cpu
         """
-        print(start_posix_process(self._cpu_vulnerabilities))
+        print_prettifier(start_posix_process(self._cpu_vulnerabilities))
