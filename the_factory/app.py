@@ -19,71 +19,72 @@ import sys
 from the_factory import thefactory
 
 
+
 def main(args: list[str]):
     operating_system = thefactory.get_os()
     if len(args) == 0 and operating_system == 'Windows':
-        print(f"The following arguments for the {operating_system} system:", *thefactory.WINDOWS_ACCEPTED_ARGS, sep=" ")
+        print(f"The following arguements for the {operating_system} system:", *thefactory.WINDOWS_ACCEPTED_ARGS, sep=" ")
         sys.exit(0)
     elif len(args) == 0 and operating_system == "Linux":
-        print(f"The following commands for the {operating_system} system:", *thefactory.LINUX_ACCEPTED_ARGS, sep=" ")
+        print(f"The following arguements for the {operating_system} system:", *thefactory.LINUX_ACCEPTED_ARGS, sep=" ")
     if len(args) > 0 and operating_system == 'Windows':
         w = thefactory.WinRig()
-        for argument in args:
+        for arguement in args:
             try:
-                if argument == 'bus':
+                if arguement == 'bus':
                     w.get_bus_information()
-                if argument == 'processor':
+                if arguement == 'processor':
                     w.get_processor_information()
-                if argument == 'network':
+                if arguement == 'network':
                     w.get_network_information()
-                if argument == 'memory':
+                if arguement == 'memory':
                     w.get_memory_information()
-                if argument == 'drivers':
+                if arguement == 'drivers':
                     w.get_driver_information()
-                if argument == 'sound':
+                if arguement == 'sound':
                     w.get_sound_device_information()
-                if argument == 'usb':
+                if arguement == 'usb':
                     w.get_usb_port_information()
-                if argument == 'floppy':
+                if arguement == 'floppy':
                     w.get_floppy_drive_information()
-                if argument == 'ide':
+                if arguement == 'ide':
                     w.get_ide_controller_information()
-                if argument == 'pcmcia':
+                if arguement == 'pcmcia':
                     w.get_pcmcia_controller_information()
-                if argument == 'usb':
+                if arguement == 'usb':
                     w.get_usb_port_information()
-                if argument == 'parallel':
+                if arguement == 'parallel':
                     w.get_parallel_port_information()
-                if argument == 'serial':
+                if arguement == 'serial':
                     w.get_serial_port_information()
-                if argument == 'graphics':
+                if arguement == 'graphics':
                     w.get_graphic_card_information()
-                if argument not in thefactory.WINDOWS_ACCEPTED_ARGS:
-                    print(f"The provided argument [{argument}] is invalid, please run again.")
+                if arguement not in thefactory.WINDOWS_ACCEPTED_ARGS:
+                    print(f"The provided arguement [{arguement}] is invalid, please run again.")
                     raise
             finally:
                 sys.exit(0)
         
     if operating_system == 'Linux' and len(args) > 0:
         x = thefactory.NixRig()
-    for argument in args:   
+    for arguement in args:   
         try:     
-            if argument == 'bios':
+            if arguement == 'bios':
                 x.get_smbios_information()
-            if argument == 'processor':
+            if arguement == 'processor':
                 x.get_processor_information()
-            if argument == 'network':
+            if arguement == 'network':
                 x.get_network_information()
-            if argument == 'memory':
+            if arguement == 'memory':
                 x.get_memory_information()
-            if argument == 'drivers':
+            if arguement == 'drivers':
                 x.get_driver_information()
-            if argument == 'check_vuln':
+            if arguement == 'check_vuln':
                 x.get_cpu_vuln_information()
-            if argument == 'power':
+            if arguement == 'power':
                 x.get_power_information()
-            if argument not in thefactory.LINUX_ACCEPTED_ARGS:
-                print(f"The Provided argument [{argument}] is invalid, please run again.")
+            if arguement not in thefactory.LINUX_ACCEPTED_ARGS:
+                print(f"The Provided arguement [{arguement}] is invalid, please run again.")
         finally:
             sys.exit(0)
 
