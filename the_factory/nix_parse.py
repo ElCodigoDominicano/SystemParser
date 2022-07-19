@@ -24,7 +24,7 @@
 import subprocess
 from collections import defaultdict
 
-def start_posix_process(command: list[str]) -> defaultdict[list]:
+def start_posix_process(command: list[str]):
     """
     Returns the created defaultdict that contains hardware information 
     from the above stated terminal command first starts a process
@@ -39,55 +39,35 @@ def start_posix_process(command: list[str]) -> defaultdict[list]:
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE
     )
-    process.wait()
     process_stream_to_str = str(process.communicate()[0], "UTF-8")
     process_string_to_lst = process_stream_to_str.split("\n")
     process.kill()
     if 'cat' in command:
         return cat_output_seperator_tool(process_string_to_lst)
     if 'find' in command:
-        return find_sed_output_seperator_tool(process_string_to_lst)
-    if 'awk' in command:
-        return awk_output_seperator_tool(process_string_to_lst)
+        return find_output_seperator_tool(process_string_to_lst)
 
-
-def cat_output_seperator_tool(list_of_strings: list[str]) -> defaultdict[list]:
+def cat_output_seperator_tool(list_of_strings: list[str]) -> defaultdict:
     """
     Returns a defaultdict from a list of output strings from a
     """
-    TEMPLATE = defaultdict(list)
+    TEMPLATE = defaultdict()
     for string in list_of_strings:
         colon = string.find(":")
         keys = string[:colon].strip("\t")
         values = string[colon+2:]
-        TEMPLATE[keys].append(values.strip(" "))
+        TEMPLATE.update({keys:values.strip(" ")})
     TEMPLATE.pop("")
     return TEMPLATE
 
 
-def find_sed_output_seperator_tool(list_of_strings: list[str]) -> defaultdict:
+def find_output_seperator_tool(list_of_strings: list[str]) -> defaultdict:
     TEMPLATE = defaultdict()
     for string in list_of_strings:
         colon = string.find(":")
-        slash = string.find("/",12)
         rslash = string.rfind("/")
-        dir_names = string[slash+1:rslash].replace("/", " ").strip("\x00")
-        file_names = string[string.rfind("/"):colon].strip("\x00").replace("/"," ")
-        keys = dir_names + file_names
+        keys = string[rslash+1:colon].strip("\x00")
         values = string[colon+1:].replace("\t", " ")
-        TEMPLATE.update({keys:values})
-    TEMPLATE.pop("")
-    return TEMPLATE
-
-
-def awk_output_seperator_tool(list_of_strings: list[str]) -> defaultdict:
-    TEMPLATE = defaultdict()
-    print(list_of_strings)
-    for string in list_of_strings:
-        print(string)
-        colon = string.find(":")
-        keys = string[:colon]
-        values = string[colon+1:]
-        TEMPLATE.update({keys:values})
+        TEMPLATE.update({keys:values.strip("")})
     TEMPLATE.pop("")
     return TEMPLATE
