@@ -13,7 +13,6 @@
     GNU General Public License for more details.
 
 """
-
 powershell_command = {
     'Bus':  ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_Bus | Format-List'],
     'Processor':  ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_Processor | Format-List'],
