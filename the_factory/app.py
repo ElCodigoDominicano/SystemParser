@@ -17,6 +17,7 @@
 import sys
 from the_factory import thefactory
 
+
 def main(args: list[str]):
     operating_system = thefactory.get_os()
     if len(args) == 0 and operating_system == 'Windows':
@@ -40,20 +41,26 @@ def main(args: list[str]):
                     w.get_driver_information()
                 if arguement == 'sound':
                     w.get_sound_device_information()
-                if arguement == 'usb':
-                    w.get_usb_port_information()
                 if arguement == 'floppy':
                     w.get_floppy_drive_information()
                 if arguement == 'ide':
                     w.get_ide_controller_information()
                 if arguement == 'pcmcia':
                     w.get_pcmcia_controller_information()
-                if arguement == 'usb':
-                    w.get_usb_port_information()
+                if arguement == 'usb_hub':
+                    w.get_usb_hub_information()
+                if arguement == 'usb_controller':
+                    w.get_usb_controller_infromation()
+                if arguement == 'usb_controller_device':
+                    w.get_usb_controller_device_information()
                 if arguement == 'parallel':
                     w.get_parallel_port_information()
-                if arguement == 'serial':
+                if arguement == 'serial_port':
                     w.get_serial_port_information()
+                if arguement == 'serial_port_settings':
+                    w.get_serial_port_settings_information()
+                if arguement == 'serial_port_configuration':
+                    w.get_serial_port_configuration_information()
                 if arguement == 'graphics':
                     w.get_graphic_card_information()
                 if arguement not in thefactory.WINDOWS_ACCEPTED_ARGS:
@@ -65,13 +72,15 @@ def main(args: list[str]):
     if operating_system == 'Linux' and len(args) > 0:
         x = thefactory.NixRig()
     for arguement in args:   
-        try:     
+        try:  
             if arguement == 'bios':
                 x.get_smbios_information()
             if arguement == 'processor':
                 x.get_processor_information()
-            if arguement == 'network':
-                x.get_network_information()
+            if arguement == 'network4':
+                x.get_network4_information()
+            if arguement == 'network6':
+                x.get_network6_information()
             if arguement == 'memory':
                 x.get_memory_information()
             if arguement == 'drivers':
