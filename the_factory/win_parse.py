@@ -75,6 +75,8 @@ def parse_process(lst_of_str: list[str]):
         colon = strings.find(":")
         keys = strings[:colon].strip(" ")
         values = strings[colon+1:].strip(" ")
+        #TEMPLATE.update({keys:values})
         TEMPLATE[keys].append(values)
     TEMPLATE.pop("")
     return TEMPLATE
+   
