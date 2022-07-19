@@ -14,11 +14,8 @@
     Author: AERivas
     Date: 07/17/2022
 """
-
 import sys
 from the_factory import thefactory
-
-
 
 def main(args: list[str]):
     operating_system = thefactory.get_os()
