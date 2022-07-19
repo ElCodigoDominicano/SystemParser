@@ -19,4 +19,6 @@ displays a medley of system information reported by the systems environment(ex. 
 - information about usage here
 
 ## WORK IN PROGRESS
-It works and it's an ongoing progress
+hint: It works and it's an ongoing progress
+OSX not implemented, yet.
+ 
