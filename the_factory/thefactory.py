@@ -1,22 +1,22 @@
 """
-    This file is included with SystemParser in order to obtain system information
-    Copyright (C) 2022 AERivas
+This file is included with SystemParser in order to obtain system information
+Copyright (C) 2022 AERivas
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-    
-    The Factory; gatherer of information, the hodlr of values, 
-    the delagator of environments, the outlet of default dictionaries.
-    
-    Author: AERivas
-    Date: 07/11/2022
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+The Factory; gatherer of information, the hodlr of values, 
+the delagator of environments, the outlet of default dictionaries.
+
+Author: AERivas
+Date: 07/11/2022
 """
 import platform
 from .nix_parse import start_posix_process
@@ -43,7 +43,8 @@ WINDOWS_ACCEPTED_ARGS: list[str] = [
 LINUX_ACCEPTED_ARGS: list[str] = [
     'bios',
     'processor',
-    'network',
+    'network4',
+    'network6',
     'memory',
     'drivers',
     'check_vuln',
@@ -60,12 +61,12 @@ def get_os() -> str:
     return platform.system()
 
 
-def print_prettifier(func):
+def print_prettifier(default_dictionary):
     if get_os() == 'Windows':
-        result = [print("{:20} => {:^30}".format(k, " ".join(v))) for (k,v) in func.items()]
+        result = [print("{:20} => {:^30}".format(k, " ".join(v))) for (k,v) in default_dictionary.items()]
         result.pop(None)
     elif get_os() == 'Linux':
-        result = [print("{:20} => {:^30}".format(k, v[0:])) for (k,v) in func.items()]
+        result = [print("{:20} => {:^30}".format(k, v[0:])) for (k,v) in default_dictionary.items()]
         result.pop(None)
 
 
@@ -88,7 +89,8 @@ class WinRig:
         self._serial_port = powershell_command["SerialPort"]
         self._serial_port_settings = powershell_command["SerialPortSettings"]
         self._serial_port_configuration = powershell_command["SerialPortConfiguration"]
-    
+
+  
     def get_motherboard_information(self):
         print_prettifier(start_powershell_process(self._motherboard))
 
@@ -176,44 +178,47 @@ class NixRig():
         # self._gpu = 
     
     def get_power_information(self):
+        """
+        Returns the output containing imformation about the systems power settings and configuration
+
+        Parsed from: /sys/devices/virtual/dmi/id/power/
+        """
         print_prettifier(start_posix_process(self._power))
 
     
     def get_smbios_information(self):
         """
+        Returns the output of the SMBIOS infomration.
         Path below contain SMBIOS information;
         BIOS, Board, Chassis and Product information..
         it is a question of ask user to run as root 
         or have them install dmidecode
         
-        /sys/devices/virtual/dmi/id/
+        Parsed from: /sys/devices/virtual/dmi/id/
         """      
         print_prettifier(start_posix_process(self._smbios))
 
 
     def get_processor_information(self):
         """
-        Returns a dictionary-like object containing various CPU information,
+        Returns the output from a kernel data file containing various CPU information,
         such as the brand, its rated speed, its model number and cache size.
-        in human readable format. the information is parsed from /proc/cpuinfo
+        in human readable format. the information is parsed from
 
-        *defaultdict in short allows for mutability of the dictionary data type
-        dictionary keys are immutable which wont allow for duplicated keys
-        with that being said all duplicated keys group their values into lists
-        ex: {'Processor': [0,1,2,3,4,5]}
-
-        more about default-dictionaries below
-        https://docs.python.org/3/library/collections.html#collections.defaultdict
+        Parsed from: /proc/cpuinfo
+        More information: https://www.kernel.org/doc/html/latest/filesystems/proc.html?highlight=proc
         """
         print_prettifier(start_posix_process(self._processor))
    
 
     def get_memory_information(self):
         """
-        Returns a dictionary containing memory information from the system. 
-        parses this information from /proc/meminfo file which contains 
-        ram and swap usage information. since the stream is non-repetitive 
-        there is no need for this to be a default dictionary
+        Returns the output from a kernel data file containing memory information 
+        from the system. Parses this information from the kernel data file which contains 
+        ram and swap usage information. 
+
+        Parsed from: /proc/meminfo
+        https://www.kernel.org/doc/html/latest/filesystems/proc.html?highlight=proc
         """
         print_prettifier(start_posix_process(self._memory))
 
@@ -241,7 +246,8 @@ class NixRig():
 
     def get_bus_information(self):
         """
-        lcpci -v
+        
+        lcpci -nnv
         """
         pass
 
@@ -249,45 +255,59 @@ class NixRig():
     def get_usb_port_information(self):
         """"
         lsusb
+
+        /dev/bus/usb/xxx/yyy ; xxx - represents the bus number, yyy - represents the device address on that bus
+        /sys/kernel/debug/usb/devices
         """
         pass
     
     
     def get_network4_information(self):
         """
-        Returns a dictionary containing various network
+        Returns the output containing various network
         information such as settings and configuration 
-        stored in /proc/sys/net/ipv4
+        stored in 
+        
+        Parsed from: /proc/sys/net/ipv4
         """
         print_prettifier(start_posix_process(self._network4))
 
     
     def get_network6_information(self):
         """
-        Returns a dictionary containing various network
+        Returns the output containing various network
         information such as settings and configuration 
-        stored in /proc/sys/net/ipv6
+        stored in 
+        
+        Parsed from: /proc/sys/net/ipv6
         """
         print_prettifier(start_posix_process(self._network6))
     
     
     def get_driver_information(self):
-        """Returns a dictionary containing the installed device drivers (mod)"""
+        """
+        Returns the output containing the information from the kernel data file
+        that contains information of installed modules(drivers) on the system.
+        
+        Parsed from: /proc/modules
+        More information: https://www.kernel.org/doc/html/latest/filesystems/proc.html?highlight=proc
+        """
         print_prettifier(start_posix_process(self._drivers))
     
     
     def get_cpu_vuln_information(self):
         """
-        Returns a dictionary containing the codenames of the vulnerabilities 
+        Returns the output containing the codenames of the vulnerabilities 
         that effect CPUs as keys, and the values are output that reflect the state 
-        for that  CPU.
+        for that CPU.
         
         possible outputs...
         "Not affected"	  CPU is not affected by the vulnerability
 		"Vulnerable"	  CPU is affected and no mitigation in effect
 		"Mitigation: $M"  CPU is affected and mitigation $M is in effect
 
-        these files are located: /sys/devices/system/cpu/vulnerabilities/
-        more information: https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-devices-system-cpu
+        Parsed From: /sys/devices/system/cpu/vulnerabilities/
+        More information: https://www.kernel.org/doc/html/latest/admin-guide/abi-testing.html#symbols-under-sys-devices
+        Extra information: https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/index.html
         """
         print_prettifier(start_posix_process(self._cpu_vulnerabilities))
