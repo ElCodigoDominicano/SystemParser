@@ -1,23 +1,29 @@
 """
-    This file is included with SystemParser in order to obtain system information
-    Copyright (C) 2022 AERivas
+This file is included with SystemParser in order to obtain system information
+Copyright (C) 2022 AERivas
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
+This file contains a dictionary whose keys contain the values of
+*nix bash commands separated by commas within a list for use with Popen
+
+Bash commands in use are: cat, find, sed, awk
+More information about bash commands(offline): within a terminal... $> man <command>
+More information about bash commands(online): https://ss64.com/bash/
+More information about the filesystem: https://www.kernel.org/doc/html/latest/admin-guide/
 """
+
 posix_command = {
     'cpuInfo': ["cat", "/proc/cpuinfo"],
     'memInfo': ["cat", "/proc/meminfo"],
-    'ioMem': ["cat", "/proc/iomem"],
-    'ioPorts': ["cat", "/proc/ioports"],
     'loadavg': ["cat", "/proc/loadavg"],
     'modules': ["cat", "/proc/modules"],
     'partitions': ["cat", "/proc/partitions"],
@@ -34,11 +40,8 @@ posix_command = {
         'find', '-L', '/proc/sys/net/ipv4', '-type', 'f', '-print0', '-exec', 
         'sed', '-z', 's/^/:/', '{}', ';'],
     'smBios': [
-        'find', '/sys/devices/virtual/dmi/id/bios_*', '/sys/devices/virtual/dmi/id/board_*', 
-        '/sys/devices/virtual/dmi/id/chassis_*', '/sys/devices/virtual/dmi/id/product_*', 
-        '/sys/devices/virtual/dmi/id/sys_*', '/sys/devices/virtual/dmi/id/uevent', 
-        '/sys/devices/virtual/dmi/id/ec_firmware_release', 'modalias', '-type', 'f', '-readable', '-print0', '-exec', 
-        'awk', '-F', "':'", '{ print FS $0 }', '{}', ';'],
+        'find', '/sys/devices/virtual/dmi/id/', '-type', 'f', '-readable', '-print0', '-exec', 
+        'awk', '-F', ':', '{ print FS $0 }', '{}', ';'],
     'checkCpuVuln': [
         'find', '/sys/devices/system/cpu/vulnerabilities','-type', 'f', '-readable', '-print0', '-exec',
         'awk', '-F', ':', '{ print FS $0 }', '{}', ';'],
