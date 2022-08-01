@@ -18,13 +18,9 @@ Bash commands in use are: find, sed
 More information about bash commands(offline): within a terminal... $> man <command>
 More information about bash commands(online): https://ss64.com/bash/
 More information about the filesystem: https://www.kernel.org/doc/html/latest/admin-guide/"""
-
-
 # make a function that handles all of this.think all list values in the first position [1] after find 
 # a function that allows for quick add and change of file and or directory
-# files that require root user to view iomem, ioports
-
-
+# files that require root user to view iomem, ioports obviously for security reasons
 POSIX_COMMANDS = {
     "cpuinfo": ["find", "/proc/cpuinfo", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/ //g", "{}", "+"],
     "meminfo": ["find", "/proc/meminfo", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/ //g", "{}", "+"],
@@ -48,7 +44,7 @@ POSIX_ACCEPTED_ARGS: list[str] = [
     'processor',
     'memory',
     'uptime',
-    'loadavg',
+    'load_average',
     'bios',
     'virtual_memory_statistics',
     'vulnerability_check',
