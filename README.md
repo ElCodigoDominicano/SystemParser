@@ -19,7 +19,10 @@ cd ~/Desktop
 git clone https://github.com/SolFox/SystemParser
 ```
 
-#### List of available arguements for Nix systems: bios, processor, network4, network6, memory, drivers, check_vuln, power
+#### List of available arguements for Nix systems: 
+processor, bios, virtual_memory_statistics, vulnerability_check, network_info4, network_info6,
+modules_drivers, power, uptime, load_average
+
 ```markdown
 $> python SystemParser network4
 ```
@@ -49,8 +52,11 @@ disable_xfrm         =>               0
 ```
 
 # Windows
-#### List of available arguements for Windows systems: bus, processor, network, memory, drivers, sound, floppy, ide,
-#### pcmcia, usb_hub, usb_controller, usb_controller_device, parallel, serial_port, serial_port_settings.
+#### List of available arguements for Windows systems:
+bus, motherboard, processor, memory, sound_device, floppy_controller, ide_controller,
+pcmcia_controller, parallel_port, usb_hub, usb_controller, usb_controller_device,
+serial_port, serial_port_settings, serial_port_configurations, list_environment_variables,
+video_controller, video_settings, video_configurations
 ```markdown
 $> py SystemParser <*arguement*>
 ```
