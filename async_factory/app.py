@@ -14,7 +14,6 @@ GNU General Public License for more details.
 
 Author: AERivas
 Date: 07/31/2022"""
-#import asyncio
 import sys
 
 from async_factory import thefactory
