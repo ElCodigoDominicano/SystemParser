@@ -65,7 +65,7 @@ async def create_windows_process(command_key):
     if stdout is not None:
         stream_byte_str_to_lst = stdout.decode().split("\r\n")
         stream_iter = filter(None, stream_byte_str_to_lst)
-        bucket = await parse_process(stream_iter)
+        bucket = await stream_parser(stream_iter)
         return bucket
     if stderr:
         pass
