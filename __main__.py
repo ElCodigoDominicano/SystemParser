@@ -21,11 +21,11 @@ will display all commands accepted by the program
 
 usage darwin: not implemented yet (near-future)
 
-list of commands for posix machines: processor, bios, virtual_memory_statistics,
-vulnerability_check, network_info4, network_info6, modukes_drivers, power,
+list of argument for posix machines: processor, bios, virtual_memory_statistics,
+vulnerability_check, network_info4, network_info6, modules_drivers, power,
 uptime, load_average
 
-list of commands for windows machines: bus, motherboard,
+list of argument for windows machines: bus, motherboard,
 processor, memory, sound_device, floppy_controller, ide_controller,
 pcmcia_controller, parallel_port, usb_hub, usb_controller,
 usb_controller_device, serial_port, serial_port_settings,
