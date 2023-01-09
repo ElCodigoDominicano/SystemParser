@@ -23,11 +23,11 @@ Date: 07/31/2022"""
 import asyncio
 
 from collections import defaultdict
-from async_factory.nix_commands import POSIX_COMMANDS
+from .nix_commands import POSIX_COMMANDS
 
 
 async def create_posix_process(command_key):
-    """*Coroutine awaitable function*
+    """*Coroutine awaitable function
     Starts an asynchronous subprocess based on the given 
     command_key, in this case the dictionary key and values
     found inside the nix_commands ; POSIX_COMMANDS
