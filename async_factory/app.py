@@ -17,8 +17,8 @@ Date: 07/31/2022"""
 import sys
 
 from async_factory import thefactory
-from async_factory.nix_commands import POSIX_ACCEPTED_ARGS
-from async_factory.win_commands import WINDOWS_ACCEPTED_ARGS
+from .nix_commands import POSIX_ACCEPTED_ARGS
+from .win_commands import WINDOWS_ACCEPTED_ARGS
 
 
 async def main(args):
