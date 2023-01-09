@@ -32,7 +32,7 @@ import asyncio
 import subprocess
 
 from collections import defaultdict
-from async_factory.win_commands import POWERSHELL_COMMANDS
+from .win_commands import POWERSHELL_COMMANDS
 
 
 async def hide_process():
