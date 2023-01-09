@@ -21,8 +21,8 @@ Author: AERivas
 Date: 07/31/2022"""
 import platform
 
-from async_factory.async_posix import create_posix_process
-from async_factory.async_windows import create_windows_process
+from .async_posix import create_posix_process
+from .async_windows import create_windows_process
 
 
 def get_os() -> str:
@@ -133,7 +133,7 @@ class NixRig:
             vm_statistics = await NixRig.set_command("vmstat")
             print_prettifier(vm_statistics)
         if "vulnerability_check" in args:
-            cpu_vulnerability_check =  await NixRig.set_command("check_cpu_vuln")
+            cpu_vulnerability_check = await NixRig.set_command("check_cpu_vuln")
             print_prettifier(cpu_vulnerability_check)
         if "network_ip4" in args:
             network_info4 = await NixRig.set_command("network_info4")
