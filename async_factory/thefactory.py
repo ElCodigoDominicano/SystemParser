@@ -38,7 +38,7 @@ logging.basicConfig(
 
 
 # Windows powershell command handling
-@dataclass
+@dataclass(slots=True)
 class WindowsMachine:
     
     @classmethod
