@@ -38,8 +38,8 @@ def get_operating_system() -> str:
 
 
 start = time.time()
-async def main(args):
-    operating_system = get_operating_system()
+async def main(args: list[str]) -> None:
+    operating_system: str = get_operating_system()
     pp = pprint.PrettyPrinter(indent=4)
     if operating_system == 'Windows' and len(args) <= 0:
         logger.info(f"The following arguments for {operating_system}: \n{' | '.join(WINDOWS_ACCEPTED_ARGS)}.")
