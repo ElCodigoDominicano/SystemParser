@@ -38,7 +38,7 @@ logging.basicConfig(
 
 
 # Windows powershell command handling
-@dataclass(slots=True)
+@dataclass
 class WindowsMachine:
     
     @classmethod
@@ -48,7 +48,7 @@ class WindowsMachine:
     
 
 # Posix bash command handling
-@dataclass(slots=True)
+@dataclass
 class PosixMachine:
  
     @classmethod
