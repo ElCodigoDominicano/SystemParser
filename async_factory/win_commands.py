@@ -16,28 +16,9 @@ separated by commas containing a powershell module and cmdlets.
 
 Information on powershell: https://docs.microsoft.com/en-us/powershell/scripting/overview?view=powershell-7.2
 Information on powershell module and cmdlets: https://docs.microsoft.com/en-us/powershell/module/cimcmdlets/?view=powershell-7.2"""
-POWERSHELL_COMMANDS = {
-    'Bus':  ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_Bus | Format-List'],
-    'Processor':  ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_Processor | Format-List'],
-    'USBController':  ['PowerShell.exe', 'Get-CimInstance','-ClassName', 'Win32_USBController | Format-List'],
-    'USBHub': ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_USBHub | Format-List'],
-    'USBControllerDevice':  ['PowerShell.exe','Get-CimInstance', '-ClassName', 'Win32_USBControllerDevice | Format-List'],
-    'ParallelPort': ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_ParallelPort | Format-List'],
-    'MotherboardDevice': ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_MotherboardDevice | Format-List'],
-    'MemoryArray':  ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_MemoryArray | Format-List'],
-    'IDEController':    ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_IDEController | Format-List'],
-    'PCMCIAController': ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_PCMCIAController | Format-List'],
-    'FloppyController': ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_FloppyController | Format-List'],
-    'SoundDevice': ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_SoundDevice | Format-List'],
-    'VideoController': ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_VideoController | Format-List'],
-    'VideoConfiguration': ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_VideoConfiguration | Format-List'],
-    'VideoSettings':    ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_VideoSettings | Format-List'],
-    'SerialPort':   ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_SerialPort | Format-List'],
-    'SerialPortSettings':   ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_SerialPortSettings | Format-List'],
-    'SerialPortConfiguration':  ['PowerShell.exe', 'Get-CimInstance', '-ClassName', 'Win32_SerialPortConfiguration | Format-List'],
-    'EnvironmentVariables': ['PowerShell.exe', 'Get-CimChildItem', '-Path', 'env:\ | Format-List']}
 
-WINDOWS_ACCEPTED_ARGS: list[str] = [
+
+WINDOWS_ACCEPTED_ARGS: tuple[str] = (
     "motherboard",
     "bus",
     "processor",
@@ -46,14 +27,131 @@ WINDOWS_ACCEPTED_ARGS: list[str] = [
     "floppy_controller",
     "ide_controller",
     "pcmcia_controller",
-    "parallel_port",
     "usb_hub",
     "usb_controller",
     "usb_controller_device",
+    "parallel_port",
     "serial_port",
     "serial_port_settings",
     "serial_port_configurations",
-    "list_environment_variables",
     "video_controller",
     "video_settings",
-    "video_configuration"]
+    "video_configurations",
+    "list_environment_variables",
+)
+
+POWERSHELL_COMMANDS: dict[str, tuple[str]] = {
+    WINDOWS_ACCEPTED_ARGS[0]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_MotherboardDevice | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[1]:  (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName',
+        'Win32_Bus | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[2]:  (
+        'PowerShell.exe',
+        'Get-CimInstance',
+        '-ClassName',
+         'Win32_Processor | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[3]:  (
+        'PowerShell.exe',
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_MemoryArray | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[4]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_SoundDevice | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[5]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_FloppyController | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[6]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_IDEController | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[7]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_PCMCIAController | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[8]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_USBHub | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[9]:  (
+        'PowerShell.exe',
+        'Get-CimInstance',
+        '-ClassName',
+        'Win32_USBController | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[10]:  (
+        'PowerShell.exe',
+        'Get-CimInstance',
+        '-ClassName', 
+        'Win32_USBControllerDevice | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[11]: (
+        'PowerShell.exe',
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_ParallelPort | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[12]:   (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 'Win32_SerialPort | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[13]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_SerialPortSettings | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[14]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_SerialPortConfiguration | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[15]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_VideoController | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[16]: (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_VideoConfiguration | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[17]:  (
+        'PowerShell.exe', 
+        'Get-CimInstance', 
+        '-ClassName', 
+        'Win32_VideoSettings | Format-List'
+    ),
+    WINDOWS_ACCEPTED_ARGS[-1]: (
+        'PowerShell.exe', 
+        'Get-ChildItem', 
+        'Env:* | Format-List'
+        #'Env:* | Select-Object -Property Name,Value'
+    )
+}

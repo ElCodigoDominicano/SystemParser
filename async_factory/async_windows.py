@@ -30,16 +30,22 @@ Author: AERivas
 Date 07/31/2022"""
 import asyncio
 import subprocess
+import logging
 
 from collections import defaultdict
 from .win_commands import POWERSHELL_COMMANDS
 
+logger = logging.getLogger()
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s"
+)
 
 async def hide_process():
     """Coroutine awaitable function
     Returns information for a process startup to create no window
-    when used with subprocess.Popen or asyncio.create_subprocess_exec
-     its use is mainly for windows"""
+    when using subprocess.Popen or asyncio.create_subprocess_exec
+    its use is mainly for windows in this program"""
     startup_information = subprocess.STARTUPINFO()
     startup_information.dwFlags |= subprocess.STARTF_USESHOWWINDOW
     startup_information.wShowWindow = subprocess.CREATE_NO_WINDOW
@@ -55,7 +61,7 @@ async def create_windows_process(command_key):
     Parameter command: a list of strings separated by commas.
     Precondition command: a valid Win32 provider class string (check examples)"""
     _process = await asyncio.create_subprocess_exec(
-        *POWERSHELL_COMMANDS[command_key],
+        *POWERSHELL_COMMANDS[command_key.pop()],
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
         startupinfo= await hide_process())
@@ -78,12 +84,12 @@ async def stream_parser(stream_iter):
     the output information as a list of strings from the created
     powershell process.
     
-    Parameter stream_iter:
+    Parameter stream_iter: 
     Precondition stream_iter:"""
     TEMPLATE = defaultdict(list)
     for strings in stream_iter:
         colon = strings.find(":")
-        keys = strings[:colon].rstrip(" ")
+        keys = strings[:colon].strip(" ")
         values = strings[colon+1:].strip(" ")
         TEMPLATE[keys].append(values)
     return TEMPLATE

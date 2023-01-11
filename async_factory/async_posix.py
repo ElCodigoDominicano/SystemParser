@@ -21,13 +21,22 @@ for more information: https://docs.python.org/3/library/subprocess.html#security
 Author: AERivas
 Date: 07/31/2022"""
 import asyncio
+import time
+import logging
 
 from collections import defaultdict
 from .nix_commands import POSIX_COMMANDS
 
+logger = logging.getLogger()
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s"
+)
+
+start = time.time()
 
 async def create_posix_process(command_key):
-    """*Coroutine awaitable function
+    """*Coroutine awaitable function*
     Starts an asynchronous subprocess based on the given 
     command_key, in this case the dictionary key and values
     found inside the nix_commands ; POSIX_COMMANDS
@@ -39,13 +48,13 @@ async def create_posix_process(command_key):
     NoneType error thus  the information is a filter iterable object.
 
     being asynchronous, the process awaits for another coroutine
-    (commander_delegate)to finish before THIS coroutine completes
+    (commander_delegate) to finish before THIS coroutine completes
     its duty of becoming an awaitable coroutine that returns a default-dict.
 
     Parameter command_key: the argument required for this program to function properly.
     Precondition command_key: must be valid posix commands contained in lists separated by commas."""
     _process = await asyncio.create_subprocess_exec(
-        *POSIX_COMMANDS[command_key],
+        *POSIX_COMMANDS[command_key.pop()],
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE)
     stdout, stderr = await _process.communicate()
@@ -57,34 +66,38 @@ async def create_posix_process(command_key):
         bucket = await stream_parser(stream_iter)
         return bucket
     if stderr:
-        # Permission error dependent on which command being ran
+        logger.warning("Permission error on the command chosen")
+        # Permission error dependent on which command being ran.
+        # certain files and or directories require superuser.
         # sudo required for viewing root permission files
-        pass
-
+        
 
 async def stream_parser(stream_iter):
     """*Coroutine awaitable function*
     Returns a default dictionary, using the list as its default factory.
     loops through a stream iterable that is using the find command. 
-    adds the system file name as the keys and the file value as the 
+    adds the system file name as the keys and the file contents as the 
     values for a default dictionary, the default factory is a list.
 
     Parameter stream_iter: a stream iterable object produced from create_posix_process
-    Precondition stream_iter: must be a decoded byte->str, split by its newlines and None filtered.
+    Precondition stream_iter: must be a decoded byte->str, split by its newlines and NoneTypes filtered out.
     
     Author: AERivas
-    Date: 07/31/2022"""
+    Date: 07/31/2022
+    Parameter: stream_iter,  a filter object containing the system information passed to the stream. (output from cmdline)
+    Precondition: this function works inconjuction with create_posix_process"""
     TEMPLATE = defaultdict(list)
     for file_output in stream_iter:
         if file_output.startswith("/"):
             first_slash = file_output.find("/")
             colon = file_output.find(":")
-            data_inside_file = file_output[colon:].strip(":").replace("\t"," ")
-            dir_file_names = file_output[first_slash+13:colon].replace("/", " ").strip("\x00")
+            data_inside_file = file_output[colon:].strip(":").replace("\t","")
+            dir_file_names = file_output[first_slash+13:colon].replace("/", " ").strip("\x00 ")
             TEMPLATE[dir_file_names].append(data_inside_file)
         elif not file_output.startswith("/"): 
             colon = file_output.find(":")
-            _key = file_output[:colon]
+            _key = file_output[:colon].strip("\t")
             _val = file_output[colon+1:]
             TEMPLATE[_key].append(_val)
+    logger.info(f"Execution time: {time.time() - start}")
     return TEMPLATE

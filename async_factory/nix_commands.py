@@ -18,37 +18,170 @@ Bash commands in use are: find, sed
 More information about bash commands(offline): within a terminal... $> man <command>
 More information about bash commands(online): https://ss64.com/bash/
 More information about the filesystem: https://www.kernel.org/doc/html/latest/admin-guide/"""
-# make a function that handles all of this.think all list values in the first position [1] after find 
-# a function that allows for quick add and change of file and or directory
-# files that require root user to view iomem, ioports obviously for security reasons
-POSIX_COMMANDS = {
-    "cpuinfo": ["find", "/proc/cpuinfo", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/ //g", "{}", "+"],
-    "meminfo": ["find", "/proc/meminfo", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/ //g", "{}", "+"],
-    "uptime": ["find", "/proc/uptime", "-type", "f", "-print0",  "-execdir", "sed", "-z", "s/^/:/", "{}", "+"],
-    # "iomem": ["find", "/proc/iomem", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/^/:/", "{}", "+"],
-    # "ioports": ["find", "/proc/ioports", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/^/:/", "{}", "+"],
-    "loadavg": ["find", "/proc/loadavg", "-type", "f", "-execdir", "sed", "-z", "s/^/:/", "{}", "+"],
-    "modules": ["find", "/proc/modules", "-type", "f", "-execdir", "sed", "-z", "s/\\b /:/g", "{}", "+"],
-    "vmstat": ["find", "/proc/vmstat", "-print0", "-execdir", "sed", "-z", "s/ /:/g", "{}", "+"],
-    "power": ["find", "/sys/devices/virtual/dmi/id/power/", "-type", "f", "-print0", "-readable", "-execdir", "sed", "s/^/:/", "{}", ";"],
-    "network_info4":  ["find", "-L", "/proc/sys/net/ipv4/", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/^/:/", "{}", ";"],
-    "network_info6": ["find", "-L", "/proc/sys/net/ipv6/", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/^/:/", "{}", ";"],
-    "smbios": ["find", "/sys/devices/virtual/dmi/id","-type", "f", "-readable", "-print0", "-execdir", "sed", "-z", "s/^/:/", "{}", ";"],
-    "check_cpu_vuln": ["find", "/sys/devices/system/cpu/vulnerabilities","-type", "f", "-readable", "-print0", "-execdir", "sed", "-z", "s/^/:/", "{}", ";"],
-    # "glxinfo": ["glxinfo"],
-    # "glxinfoD": ["egrep", "-i", "device|memory"],
-    # "env": ["env"]
-    }
 
-POSIX_ACCEPTED_ARGS: list[str] = [
+POSIX_ACCEPTED_ARGS: tuple[str] = (
     'processor',
     'memory',
     'uptime',
     'load_average',
-    'bios',
+    'driver_modules',
     'virtual_memory_statistics',
-    'vulnerability_check',
+    'power',
     'network_ip4',
     'network_ip6',
-    'driver_modules',
-    'power']
+    'bios',
+    'vulnerability_check',
+)
+
+POSIX_COMMANDS: dict[str, tuple[str]] = {
+    POSIX_ACCEPTED_ARGS[0]: (
+        "find", 
+        "/proc/cpuinfo", 
+        "-type", 
+        "f", 
+        "-print0", 
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/ //g", 
+        "{}", 
+        "+"
+    ),
+    POSIX_ACCEPTED_ARGS[1]: (
+        "find", 
+        "/proc/meminfo", 
+        "-type", 
+        "f", 
+        "-print0", 
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/ //g", 
+        "{}", 
+        "+"
+    ),
+    POSIX_ACCEPTED_ARGS[2]: (
+        "find", 
+        "/proc/uptime", 
+        "-type", 
+        "f", 
+        "-print0", 
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/^/:/", 
+        "{}", 
+        "+"
+    ),
+    POSIX_ACCEPTED_ARGS[3]: (
+        "find", 
+        "/proc/loadavg", 
+        "-type", 
+        "f", 
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/^/:/", 
+        "{}", 
+        "+"
+    ),
+    POSIX_ACCEPTED_ARGS[4]: (
+        "find", 
+        "/proc/modules", 
+        "-type", 
+        "f",
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/\\b /:/g", 
+        "{}", 
+        "+"
+    ),
+    POSIX_ACCEPTED_ARGS[5]: (
+        "find", 
+        "/proc/vmstat", 
+        "-print0", 
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/ /:/g", 
+        "{}", 
+        "+"
+    ),
+    POSIX_ACCEPTED_ARGS[6]: (
+        "find", 
+        "/sys/devices/virtual/dmi/id/power/", 
+        "-type", 
+        "f", 
+        "-print0", 
+        "-readable", 
+        "-execdir", 
+        "sed", 
+        "s/^/:/", 
+        "{}", 
+        ";"
+    ),
+    POSIX_ACCEPTED_ARGS[7]: (
+        "find", 
+        "-L", 
+        "/proc/sys/net/ipv4/", 
+        "-type", 
+        "f", 
+        "-print0", 
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/^/:/", 
+        "{}", 
+        ";"
+    ),
+    POSIX_ACCEPTED_ARGS[8]: (
+        "find",
+        "-L", 
+        "/proc/sys/net/ipv6/", 
+        "-type", 
+        "f", 
+        "-print0", 
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/^/:/", 
+        "{}", 
+        ";"
+    ),
+    POSIX_ACCEPTED_ARGS[9]: (
+        "find", 
+        "/sys/devices/virtual/dmi/id",
+        "-type", 
+        "f", 
+        "-readable", 
+        "-print0", 
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/^/:/", 
+        "{}", 
+        ";"
+    ),
+    POSIX_ACCEPTED_ARGS[-1]: (
+        "find",
+        "/sys/devices/system/cpu/vulnerabilities",
+        "-type", 
+        "f", 
+        "-readable",
+        "-print0", 
+        "-execdir", 
+        "sed", 
+        "-z", 
+        "s/^/:/", 
+        "{}", 
+        ";"
+    ),
+}
+
+
+# "iomem": ["find", "/proc/iomem", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/^/:/", "{}", "+"),
+# "ioports": ["find", "/proc/ioports", "-type", "f", "-print0", "-execdir", "sed", "-z", "s/^/:/", "{}", "+"),
+# "glxinfo": ["glxinfo"],
+# "glxinfoD": ["egrep", "-i", "device|memory"],
+# "env": ["env"]
