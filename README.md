@@ -1,4 +1,4 @@
-# SystemParser_0.1.0
+# SystemParser_0.1.1
 
 A simple system information gathering tool written in python using the asyncio library, displays a medley of<br>
 system information reported by the systems environment(ex. Windows, Nix, MACOS)<br> 
