@@ -21,7 +21,6 @@ about your system)
 Author: AERivas
 Date: 07/31/2022
 Updated: 01/10/2023"""
-import platform
 import logging
 
 from dataclasses import dataclass
