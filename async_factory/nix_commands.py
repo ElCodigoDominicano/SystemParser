@@ -11,8 +11,9 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-This file contains a dictionary contains keys and values the keys are
-just short names for *nix bash commands to be used with the asynchronous
+This file contains a tuple containing strings which are the programs acceptable arguments
+a dictionary that contains keys as those strings and values are
+tuples containing strings with the approved command.
 
 Bash commands in use are: find, sed
 More information about bash commands(offline): within a terminal... $> man <command>
