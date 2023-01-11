@@ -18,7 +18,6 @@ center; used for Central Intelligence of Information Gathering
 (in short for you to use too find out about certain information 
 about your system)
 ... |(--@_@),
-The delegator of environments,
 Author: AERivas
 Date: 07/31/2022
 Updated: 01/10/2023"""
