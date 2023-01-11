@@ -2,3 +2,4 @@
 0.0.2-alpha -> Displays that data prettified added a string prettifier function
 0.0.3-alpha -> Minor fix to code wasnt outputting data properly
 0.1.0 - > Complete code change now reflects the usage of asynchronous programming (using asyncio library)
+0.1.0 - > Improved speed, major code refactor added pprint, type hinting, more Object-Oriented, still no color :[ 
